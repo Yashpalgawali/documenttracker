@@ -1,0 +1,130 @@
+@charset "ISO-8859-1";
+
+
+/* Header Styling  */
+
+.navbar {
+	    background-color: #2596be;
+	    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+   }
+
+.nav-link{
+		 color: white;
+}
+.nav-link:hover{
+ 	
+/* 		font-size	:	1.2em; */
+/* 		text-decoration : none; */
+/* 		border-left-style 	:	solid; */
+/* 		border-right-style	:solid; */
+/* 		border-left-color	: white; */
+/* 		border-right-color:  white; */
+}
+
+
+/*   End  Of  Header Styling   */  
+
+/* Sidebar Styling */
+
+.sidebar {
+		position		:	relative;
+		top				:  	80px;
+		height			:	200vh; 
+		width			:  	220px;
+		margin-top		: 	0;
+		background-color:	#2596be;	
+		text-align		: 	center;	
+	}
+	.sidebar a{
+		text-decoration:  none;
+	}
+	.sidebar a:hover{
+		font-size	:1.1em;
+	}
+	
+	.sidebar:hover{
+		text-decoration : none;
+	}
+	.sidebar a,.sidebar>h4{
+		color	: white;
+		
+	}
+	
+	
+	
+	/***  END Of SideBar Styling ***/
+	
+/*   Home Styling  */
+
+.container-adddoc
+{
+	position	: absolute;
+	top			: 130px;
+	left 		: 300px;
+	padding 	: 20px;
+	clear		: right;
+}
+
+.float-child{
+		
+		float : left;
+		padding: 70px;
+}
+.icon-links{
+	position	:	absolute;
+	top 		:	300px;
+	left		:	300px;
+}
+
+/* END OF Home Styling */ 	
+	
+	
+	/* ADD Document Styling */
+	/* This container class is used in  add document and View Document as well */
+	.container{
+			position	: absolute;
+			top			: 150px;
+			left 		: 250px;
+	}
+	
+	/*  VIew DOCUMENT Styling  */
+	
+	
+	
+	.add-doc{
+		position:	absolute;
+		top		:	110px;
+		left	:	265px;		
+	}
+	
+	/*  END OF VIEW Document Styling */
+	
+	
+	/* Footer Styling  */
+	
+	.flex-container{
+	
+	background-color: 	#2596be;
+	position		: 	relative ;
+	height			:	400px;
+}
+
+#mailinfo{
+	color:	white;
+}
+
+.logo-fr{
+	width 	 : 20px;
+	padding  : 50px;
+	height	 : 400px;
+	float	 : left;
+}
+
+.contact-info{ 
+	  width			: 430px;
+	  padding		: 50px;
+	  color			: white;
+	  margin-left	: 200px;
+}
+	
+	/* END OF Footer Styling  */

@@ -1,0 +1,14 @@
+@charset "ISO-8859-1";
+
+.divheaders{
+	
+	background-color : yellow;
+	
+	height: 50px;
+	width:100%;
+}
+
+.container{
+	
+	margin-top : 150px;
+}

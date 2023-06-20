@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+<meta charset="ISO-8859-1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title></title>
+
+<link th:href="@{../css/style.css}" rel="stylesheet" />
+
+
+</head>
+<body>
+	
+	
+<header th:fragment="sidebar">
+	
+	<div class="sidebar">
+		<hr>
+			<h4>DashBoard&nbsp;&nbsp;&nbsp;<i class="fas fa-bars fa-lg"></i></h4>
+		<hr>
+		<a th:href="@{adddocument}" class="side-menu"><i class="fa fa-file" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Add Documents</a>
+		 <hr>
+		<a th:href="@{viewdocuments}" class="side-menu"><i class="fas fa-bars " ></i>&nbsp;&nbsp;&nbsp;View Documents</a>
+		 <hr>
+		<a th:href="@{uploaddocuments}" class="side-menu" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Upload Documents</a>
+		<hr>
+	</div>
+</header>
+
+</body>
+
+</html>
