@@ -13,18 +13,18 @@ public class HomeController {
 	@GetMapping("/")
 	public String homePage()
 	{
-		LocalDate oneYearAfter =  LocalDate.now().plusYears(2) ;// now.plusYears(1);
-		
-		Date current = new Date();
-		
-		System.out.println("Date after 1 year is -> "+oneYearAfter);
-		
-		
-		 LocalDate local = LocalDate.ofInstant(
-		            current.toInstant(), ZoneId.systemDefault());
-		  
-		        // printing the local date object
-		        System.out.println(local);
+//		LocalDate oneYearAfter =  LocalDate.now().plusYears(2) ;// now.plusYears(1);
+//		
+//		Date current = new Date();
+//		
+//		System.out.println("Date after 1 year is -> "+oneYearAfter);
+//		
+//		
+//		 LocalDate local = LocalDate.ofInstant(
+//		            current.toInstant(), ZoneId.systemDefault());
+//		  
+//		        // printing the local date object
+//		        System.out.println(local);
 		
 		return "Home";
 	}

@@ -54,40 +54,9 @@ public class DocumentController {
 	@Autowired
 	DocumentService docserv;
 	
-	
-	
 	@GetMapping("/adddocument")
 	public String addDocument()
-	{	
-//		System.err.println("Upload Directory is -->>> "+uploadDirectory);
-		
-//		int[] arr2 = new int[]{54, 432, 53, 21, 43};
-//		
-//		Arrays.sort(arr2);
-		
-//		for(int i=0;i<arr2.length;i++)
-//		{
-//			System.err.println("Sorted array is ->> "+ arr2[i]);
-//		}
-//		
-//		
-//		List<Document> slist = new ArrayList<Document>();
-//		
-//		slist.add(new Document(Long.valueOf(1), "lincence","cra@gmail.com", null, null, 0));
-//		slist.add(new Document(Long.valueOf(12), "RTO","cra@gmail.com", null, null, 0));
-//		slist.add(new Document(Long.valueOf(21), "BlackRock","cra@gmail.com", null, null, 0));
-//		
-//		slist.stream().distinct().forEach(e->System.err.println(e.getDoc_name()));
-//		
-//		System.out.println();
-//		
-//		slist.stream().forEach(e->System.out.println(e.getDoc_id()+"----->>>>"+e.getDoc_name()));
-//		
-//		System.err.println("\n Conversion to map \n");
-//		
-//		LinkedHashMap<Long, String> map = slist.stream().collect(Collectors.toMap(Document::getDoc_id,Document::getDoc_name,(x,y)->x+","+y,LinkedHashMap::new));	
-//		map.forEach((x,y)->System.out.println(x+"==>>"+y));
-		return "AddDocument";
+	{	return "AddDocument";
 	}
 	
 	@Autowired
@@ -238,19 +207,18 @@ public class DocumentController {
 	EmailService mailserv;
 
 	
-	@SuppressWarnings("deprecation")
-	@Scheduled(cron =" 20,59 42 16 1,14,L * *  ")
+	
+	@Scheduled(cron =" 20,59 44 14 1,10,L * *  ")
 	void someJob() throws InterruptedException, Exception
 	{
 		List<Document> doclist  = docserv.getAllDocsList();
 		
 		String stdate		=	null;
-		String datenew 		= 	null ;
 		String today_date 	= 	null;
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("en", "EN"));
 		
-		Date last_found_date , todays_date, todays_date_final,next_renewal_date ;
+		Date last_found_date ,  todays_date_final ;
 		
 		today_date = simpleDateFormat.format(new Date());
 		
@@ -259,21 +227,18 @@ public class DocumentController {
 		for(int i=0;i<doclist.size();i++)
 		{
 			  Document doc = doclist.get(i);
-			
 			  last_found_date = doc.getLast_renewed_date();
-			  
 			 // last_found_date =	simpleDateFormat.parse(last_found_date);
-			  
 			
 			  System.err.println("Last renewed date ->> "+last_found_date+"\n Todays date is ->> "+today_date);
 			  
-			  LocalDate local = LocalDate.ofInstant(
-					  last_found_date.toInstant(), ZoneId.systemDefault());
+			  LocalDate local = LocalDate.ofInstant(last_found_date.toInstant(), ZoneId.systemDefault());
 			  
+		  
 			        // printing the local date object
 			    	local = local.plusYears(doc.getLicense_duration());
 			    	
-			    	 stdate = simpleDateFormat.format(local);
+			    	stdate = simpleDateFormat.format(local);
 			  
 			    	// 	This will give the formatted date in the format " Fri Feb 25 14:48:21 IST 2022 "
 			        //	last_found_date 	=	simpleDateFormat.parse(stdate);
@@ -284,12 +249,12 @@ public class DocumentController {
 			         
 			        difference_In_Days = (difference_In_Time / (1000 * 60 * 60 * 24)) % 365;
 			        
-			        if(difference_In_Days >=-30 && difference_In_Days <=1) {
-		        	
-			        //mailserv.sendSimpleMail(stdate, datenew, today_date);
-			        mailserv.sendSimpleMail(doc.getEmail(), "Hello, \nThis is the reminder email."+"\n"+"Regarding the renewal of "+doc.getDoc_name().toUpperCase() +" which will expire in "+difference_In_Days+" days", "License renewal of "+doc.getDoc_name().toUpperCase());
-		        	//break;
-		        } 
+			        if(difference_In_Days >=-30 && difference_In_Days <=1) 
+			        {
+				        //mailserv.sendSimpleMail(stdate, datenew, today_date);
+				        mailserv.sendSimpleMail(doc.getEmail(), "Hello, \nThis is the reminder email."+"\n"+"Regarding the renewal of "+doc.getDoc_name().toUpperCase() +" which will expire in "+difference_In_Days+" days", "License renewal of "+doc.getDoc_name().toUpperCase());
+			        	//break;
+		            } 
 			        
 			    System.err.println("\n "+doc.getDoc_name() +"-->> Difference in Days is ->> "+difference_In_Days);	   
 		}
