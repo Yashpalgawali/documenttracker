@@ -9,9 +9,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -19,6 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,57 +209,32 @@ public class DocumentController {
 	@Autowired
 	EmailService mailserv;
 
-	
-	
-	@Scheduled(cron =" 20,59 44 14 1,10,L * *  ")
+	@Scheduled(cron =" 20,59 14 16 1,13,L * *  ")
 	void someJob() throws InterruptedException, Exception
 	{
+		LocalDate today = LocalDate.now();
+		DateTimeFormatter dformat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		System.err.println("Todays date is --> "+today+"\n");
+		
+		
 		List<Document> doclist  = docserv.getAllDocsList();
-		
-		String stdate		=	null;
-		String today_date 	= 	null;
-		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("en", "EN"));
-		
-		Date last_found_date ,  todays_date_final ;
-		
-		today_date = simpleDateFormat.format(new Date());
-		
-		long difference_In_Time , difference_In_Days;
-		
 		for(int i=0;i<doclist.size();i++)
 		{
-			  Document doc = doclist.get(i);
-			  last_found_date = doc.getLast_renewed_date();
-			 // last_found_date =	simpleDateFormat.parse(last_found_date);
+			String last_renewed_date="",todays_date="";
 			
-			  System.err.println("Last renewed date ->> "+last_found_date+"\n Todays date is ->> "+today_date);
-			  
-			  LocalDate local = LocalDate.ofInstant(last_found_date.toInstant(), ZoneId.systemDefault());
-			  
-		  
-			        // printing the local date object
-			    	local = local.plusYears(doc.getLicense_duration());
-			    	
-			    	stdate = simpleDateFormat.format(local);
-			  
-			    	// 	This will give the formatted date in the format " Fri Feb 25 14:48:21 IST 2022 "
-			        //	last_found_date 	=	simpleDateFormat.parse(stdate);
-			    	
-			    	last_found_date		=	simpleDateFormat.parse(stdate);
-			    	todays_date_final	=	simpleDateFormat.parse(today_date);
-			        difference_In_Time 	=	last_found_date.getTime() - todays_date_final.getTime();
-			         
-			        difference_In_Days = (difference_In_Time / (1000 * 60 * 60 * 24)) % 365;
-			        
-			        if(difference_In_Days >=-30 && difference_In_Days <=1) 
-			        {
-				        //mailserv.sendSimpleMail(stdate, datenew, today_date);
-				        mailserv.sendSimpleMail(doc.getEmail(), "Hello, \nThis is the reminder email."+"\n"+"Regarding the renewal of "+doc.getDoc_name().toUpperCase() +" which will expire in "+difference_In_Days+" days", "License renewal of "+doc.getDoc_name().toUpperCase());
-			        	//break;
-		            } 
-			        
-			    System.err.println("\n "+doc.getDoc_name() +"-->> Difference in Days is ->> "+difference_In_Days);	   
+			todays_date = dformat.format(today);
+			System.err.println("Last Renewed date is -->> "+doclist.get(i).getLast_renewed_date());
+//			Instant instant = doclist.get(i).getLast_renewed_date().toInstant();
+//
+//			LocalDateTime ldt = instant
+//					  .atZone(ZoneId.of("CET"))
+//					  .toLocalDateTime();
+//			String formattedDate = ldt.format(dformat);
+			
+			java.util.Date tday = new SimpleDateFormat("yyyy-MM-dd").parse(todays_date.toString());
+			long diff = tday.getTime()-doclist.get(i).getLast_renewed_date().getTime();
+			
+			System.err.println("Differnrece is =>> "+TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
 		}
 	}
 	
@@ -266,7 +244,6 @@ public class DocumentController {
 		int res = docserv.deleteDocumentById(id);
 		if(res!=0)
 		{
-			
 			System.err.println("Document is deleted successfully");
 			return "success";
 		}

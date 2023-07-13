@@ -39,8 +39,12 @@ public class DocumentServImpl implements DocumentService {
 		if(id!=null)
 		{
 			Long did = Long.valueOf(id);
-			
-			return docrepo.findById(did).get();
+			try {
+				return docrepo.findById(did).get();
+			}
+			catch(Exception e){
+				return null;
+			}
 		}
 		else {
 			return null;
