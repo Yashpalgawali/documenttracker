@@ -32,7 +32,4 @@
 				close	: 'fa fa-times'
 			}
 		});
-		
-		
-		
 	});
