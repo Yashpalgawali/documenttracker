@@ -7,12 +7,7 @@
 		var docarr = "";
 		let appname = $('#appname').val();
 		let baseurl = $('#base_url').val();
-		alert(baseurl+appname);
-		//var lyear,lmonth,ldate,differnce_time,Difference_In_Days;
-//		var date 	= new Date();
-//		var tyear 	= (parseInt(date.getFullYear()));
-//		var tmonth 	= (parseInt(String(date.getMonth()+1).padStart(2,'0')));
-//		var tdate  	= (parseInt(String(date.getDate()).padStart(2 , '0')));
+		
 		var nyear,nmonth,ndate;
 	
 		$.ajax({
