@@ -7,6 +7,7 @@
 		var docarr = "";
 		let appname = $('#appname').val();
 		let baseurl = $('#base_url').val();
+		alert(baseurl+appname);
 		//var lyear,lmonth,ldate,differnce_time,Difference_In_Days;
 //		var date 	= new Date();
 //		var tyear 	= (parseInt(date.getFullYear()));
