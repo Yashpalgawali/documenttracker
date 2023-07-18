@@ -7,6 +7,7 @@ import java.lang.ProcessBuilder.Redirect;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -16,6 +17,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -209,32 +211,43 @@ public class DocumentController {
 	@Autowired
 	EmailService mailserv;
 
-	@Scheduled(cron =" 20,59 14 16 1,13,L * *  ")
+	@Scheduled(cron =" 20 28 15 1,18,L * *  ")
 	void someJob() throws InterruptedException, Exception
 	{
 		LocalDate today = LocalDate.now();
+		LocalDate l_year;
 		DateTimeFormatter dformat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		System.err.println("Todays date is --> "+today+"\n");
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		
+		System.err.println("Todays date is --> "+today+"\n");
 		
 		List<Document> doclist  = docserv.getAllDocsList();
 		for(int i=0;i<doclist.size();i++)
 		{
-			String last_renewed_date="",todays_date="";
+			l_year = doclist.get(i).getLast_renewed_date().toLocalDate();
+			l_year = l_year.plusYears(doclist.get(i).getLicense_duration());
 			
-			todays_date = dformat.format(today);
-			System.err.println("Last Renewed date is -->> "+doclist.get(i).getLast_renewed_date());
-//			Instant instant = doclist.get(i).getLast_renewed_date().toInstant();
-//
-//			LocalDateTime ldt = instant
-//					  .atZone(ZoneId.of("CET"))
-//					  .toLocalDateTime();
-//			String formattedDate = ldt.format(dformat);
+			String n_year = dformat.format(l_year),t_year = dformat.format(today);
 			
-			java.util.Date tday = new SimpleDateFormat("yyyy-MM-dd").parse(todays_date.toString());
-			long diff = tday.getTime()-doclist.get(i).getLast_renewed_date().getTime();
+			Date last_renew_date =  format.parse(n_year);
+			Date current_date =  format.parse(t_year);
 			
-			System.err.println("Differnrece is =>> "+TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+			// Calculate time difference in milliseconds   
+            long time_difference = last_renew_date.getTime() - current_date.getTime() ;  
+			
+		     // Calculate time difference in days using TimeUnit class  
+            long days_difference = TimeUnit.MILLISECONDS.toDays(time_difference) % 365;  
+            
+            System.out.println("Diiference is "+days_difference);
+            
+            if(days_difference<=30 && days_difference>=1)
+            {
+            	mailserv.sendSimpleMail(doclist.get(i).getEmail(), "Respected Sir , \n \t the document "+doclist.get(i).getDoc_name()+" will expire in "+days_difference+" days. On "+last_renew_date , "Document "+doclist.get(i).getDoc_name()+" expiry");
+            }
+            if(days_difference>=(-30) && days_difference<=(-1))
+            {
+            	mailserv.sendSimpleMail(doclist.get(i).getEmail(), "Respected Sir , \n \t the document "+doclist.get(i).getDoc_name()+" is expired On "+l_year, "Document "+doclist.get(i).getDoc_name()+" expired");
+            }
 		}
 	}
 	
@@ -251,7 +264,6 @@ public class DocumentController {
 			System.err.println("Document is NOT deleted ");
 			return "failed";
 		}
-		
 	}
 	
 	
