@@ -18,7 +18,7 @@
 		$.ajax({
 			
 			type     : "GET",
-		    url      : baseurl+"/"+appname+"/viewalldocuments",
+		    url      : baseurl+"/viewalldocuments",
 		    //url      : "viewalldocuments",
 			dataType : "json",
 			success  : function(result) 
@@ -92,7 +92,7 @@
 		if(res)
 		{
 			$.ajax({
-					url      : baseurl+"/"+appname+"/deldocbyid/"+did,
+					url      : baseurl+"/deldocbyid/"+did,
 					//url 	: '/deldocbyid/'+did,
 					type 	: 'GET',
 					dataType: 'json',
