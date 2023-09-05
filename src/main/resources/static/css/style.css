@@ -18,7 +18,7 @@
 .sidebar {
 		position		:	relative;
 		top				:  	80px;
-		height			:	200vh; 
+		height			:	100vh; 
 		width			:  	220px;
 		margin-top		: 	0;
 		background-color:	#2596be;	
@@ -102,14 +102,14 @@
 	color:	white;
 }
 
-.logo-fr{
+.logo-fr {
 	width 	 : 20px;
 	padding  : 50px;
 	height	 : 400px;
 	float	 : left;
 }
 
-.contact-info{ 
+.contact-info { 
 	  width			: 430px;
 	  padding		: 50px;
 	  color			: white;

@@ -61,8 +61,10 @@ public class DocumentHistory {
 		this.document = document;
 	}
 
-
-	
-	
+	@Override
+	public String toString() {
+		return "DocumentHistory [hist_id=" + hist_id + ", operation=" + operation + ", op_date=" + op_date
+				+ ", document=" + document + "]";
+	}
 	
 }

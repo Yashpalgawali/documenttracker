@@ -54,6 +54,8 @@ public class DocumentController {
 	@Autowired
 	DocumentService docserv;
 	
+	@Autowired
+	DocumentHistoryService histserv;
 	
 	
 	@GetMapping("/adddocument")
@@ -62,8 +64,6 @@ public class DocumentController {
 		return "AddDocument";
 	}
 	
-	@Autowired
-	DocumentHistoryService histserv;
 	
 	@RequestMapping("/savedocument")
 	public String saveDocument(@ModelAttribute("Document")Document docs, RedirectAttributes attr)
@@ -91,10 +91,8 @@ public class DocumentController {
 		}
 	}
 	
-	
 	@GetMapping("/viewdocuments")
-	public String viewDocuments()
-	{
+	public String viewDocuments() {
 		return "ViewDocuments";
 	}
 	
@@ -209,16 +207,13 @@ public class DocumentController {
 	@Autowired
 	EmailService mailserv;
 
-	@Scheduled(cron =" 20 28 15 1,18,L * *  ")
+	@Scheduled(cron ="2,20 18 14 5,18,L * *  ")
 	void someJob() throws InterruptedException, Exception
 	{
 		LocalDate today = LocalDate.now();
 		LocalDate l_year;
 		DateTimeFormatter dformat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		
-		System.err.println("Todays date is --> "+today+"\n");
-		
 		List<Document> doclist  = docserv.getAllDocsList();
 		for(int i=0;i<doclist.size();i++)
 		{
@@ -236,14 +231,10 @@ public class DocumentController {
 		     // Calculate time difference in days using TimeUnit class  
             long days_difference = TimeUnit.MILLISECONDS.toDays(time_difference) % 365;  
             
-            System.out.println("Diiference is "+days_difference);
-            
-            if(days_difference<=30 && days_difference>=1)
-            {
+            if(days_difference<=30 && days_difference>=1) {
             	mailserv.sendSimpleMail(doclist.get(i).getEmail(), "Respected Sir , \n \t the document "+doclist.get(i).getDoc_name()+" will expire in "+days_difference+" days. On "+last_renew_date , "Document "+doclist.get(i).getDoc_name()+" expiry");
             }
-            if(days_difference>=(-30) && days_difference<=(-1))
-            {
+            if(days_difference>=(-30) && days_difference<=(-1)) {
             	mailserv.sendSimpleMail(doclist.get(i).getEmail(), "Respected Sir , \n \t the document "+doclist.get(i).getDoc_name()+" is expired On "+l_year, "Document "+doclist.get(i).getDoc_name()+" expired");
             }
 		}
@@ -253,8 +244,7 @@ public class DocumentController {
 	public String deldocbyid(@PathVariable("id")String id)
 	{
 		int res = docserv.deleteDocumentById(id);
-		if(res!=0)
-		{
+		if(res!=0) {
 			System.err.println("Document is deleted successfully");
 			return "success";
 		}
@@ -264,6 +254,14 @@ public class DocumentController {
 		}
 	}
 	
+	
+	@GetMapping("getdochistbyid/{id}")
+	public String getDocHistoryById(@PathVariable("id") Long id,Model model,RedirectAttributes attr)
+	{
+		List<DocumentHistory> dochist = histserv.getDochistById(id);
+		model.addAttribute("dochist", dochist);
+		return "ViewDocumentHistory";
+	}
 	
 	@EnableScheduling
 	class SchedulingConfiguration implements Serializable{

@@ -32,10 +32,14 @@
 					if(nmnt.length==1){
 						nmonth = '0'+nmonth;	
 					}
+					if(ndate<10) {
+						ndate = '0'+ndate;
+					}
+					
 					var nyeardate = (nyear+(result[i].license_duration))+"-"+nmonth+"-"+ndate;
 					const diffTime = Math.abs(new Date(nyeardate).getTime() - new Date(todaysdate).getTime());
 					var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-					
+					//alert("days differnrece for "+result[i].doc_name+" is "+diffDays);
 					if(diffDays >=1 && diffDays <=30){
 						alert(result[i].doc_name+" needs to be renewed on or before "+nyeardate);
 					}
@@ -57,16 +61,14 @@
 			        "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 			        	
 			        	var rowCount = $("#doctable tr").length;
-						
-			        	for(var i=0;i<rowCount;i++){
+			        	for(var i=0;i<rowCount;i++) {
 			        	
 			        		var tdata = aData[4];
 							const todaysdate = new Date();
 							const diffTime = Math.abs(new Date(tdata).getTime() - new Date(todaysdate).getTime());
 							const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 	
 			        	
-							if(diffDays >=1 && diffDays <=30)
-					      	{
+							if(diffDays >=1 && diffDays <=30) {
 					    		$('td', nRow).css('color', 'Red');
 					      	}
 					    }	
@@ -88,7 +90,6 @@
 		{
 			$.ajax({
 					url      : baseurl+"/deldocbyid/"+did,
-					//url 	: '/deldocbyid/'+did,
 					type 	: 'GET',
 					dataType: 'json',
 					success : function(result)

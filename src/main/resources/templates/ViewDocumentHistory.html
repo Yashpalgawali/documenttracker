@@ -3,13 +3,15 @@
 <head>
 <meta charset="ISO-8859-1" /> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>View Documents</title>
+<title>View Document History</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
 <!-- jQuery library -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+
 <link rel ="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 <link th:href="@{/css/style.css}" rel="stylesheet" />
@@ -24,28 +26,35 @@
 			<div th:if="${reserr}"><h6 class="alert alert-danger">[[${reserr}]]</h6></div>
 			<input type="hidden" id="appname" th:value="${session.appname}"/>
 			<input type="hidden" id="base_url" th:value="${session.base_url}"/>
-			<div class="card-header"><h4>View Documents</h4></div>
+			<div class="card-header"><h4>View Document History</h4></div>
 		<div class="form-group mb-3">
 		<table class="table table-striped table-hover" id="doctable">
 			<thead>
 				<tr>
 <!-- 					<td>Sr no.</td> -->
 					<td>Document Name</td>
-					<td>Email</td>
-					<td>Issued Date </td>
-					<td>Last Updated Date </td>
-					<td>Next Renewal Date </td>
-					<td>Actions</td>
+					<td>Operation Date </td>
+					<td>Operation </td>
 				</tr>
 			</thead>
-			<tbody id="docbody"></tbody>
+			<tbody id="docbody">
+				<th:block th:each="dochist : ${dochist}">
+					<tr>
+						<td th:text="${dochist.document.doc_name}"></td>
+						<td th:text="${dochist.op_date}"></td>
+						<td th:text="${dochist.operation}"></td>
+					</tr>
+				</th:block>
+			</tbody>
 		</table>	
 		</div>
 	  </div>
+
 	<div th:replace="Footer.html :: footer"></div>
-<script th:src="@{/js/viewdocuments.js}"></script>	
-<!-- Popper JS -->
+	
+	<!-- Popper JS -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
