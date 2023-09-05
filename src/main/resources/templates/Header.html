@@ -1,28 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.springframework.org/security/tags">
-  
-
 <head>
 <meta charset="ISO-8859-1" />
-
 <title></title>
-
 <link th:href="@{/css/style.css}" rel="stylesheet" />
-
 </head>
 <body>
-	
 <header th:fragment="header">
-			
 	<div class="header" >
 		<!-- A grey horizontal navbar that becomes vertical on small screens -->
-			
 		<nav class="navbar navbar-expand-sm fixed-top" >
- 	 
 	 	 <!-- Brand/logo -->
 	   	<a class="navbar-brand" th:href="@{/}">
-	  		<img id="logo" th:src="@{/img/savera-logo.png}" alt="logo" height="70px" width="150px"/>
+	  		<img id="logo" th:src="@{/img/logo.png}" alt="logo" height="70px" width="150px"/>
 	  	</a>
 	  	<!-- Links -->
 	  	

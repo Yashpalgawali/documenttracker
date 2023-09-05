@@ -57,25 +57,18 @@ public class DocumentController {
 	@Autowired
 	DocumentHistoryService histserv;
 	
-	
 	@GetMapping("/adddocument")
-	public String addDocument()
-	{
+	public String addDocument() {
 		return "AddDocument";
 	}
 	
 	
 	@RequestMapping("/savedocument")
-	public String saveDocument(@ModelAttribute("Document")Document docs, RedirectAttributes attr)
-	{
+	public String saveDocument(@ModelAttribute("Document")Document docs, RedirectAttributes attr) {
 		Document document = docserv.saveDocument(docs);
-		
-		if(document!=null)
-		{	
+		if(document!=null) {	
 			DocumentHistory dhist = new DocumentHistory();
-			
 			String tday = simpleDateFormat.format(today);
-			
 			dhist.setDocument(document);
 			dhist.setOp_date(tday);
 			dhist.setOperation("Document "+document.getDoc_name()+" is saved successfully");
@@ -98,37 +91,30 @@ public class DocumentController {
 	
 	@GetMapping("/viewalldocuments")
 	@ResponseBody
-	public List<Document>  viewAllDocuments()
-	{
+	public List<Document>  viewAllDocuments() {
 		List<Document> dlist = docserv.getAllDocsList();
 		return dlist;
 	}
 	
 	@RequestMapping("/getdocbyid{id}")
-	public String getDocById(@RequestParam String id,Model model, RedirectAttributes attr)
-	{
+	public String getDocById(@RequestParam String id,Model model, RedirectAttributes attr) {
 		Document document = docserv.getDocById(id);
-		
-		if(document!=null){
+		if(document!=null) {
 			model.addAttribute("docs", document);
 			return "EditDocument";
 		}
-		else{
+		else {
 			attr.addFlashAttribute("reserr", "No document found for given Id");
 			return "redirect:/viewdocuments";
 		}
 	}
 	
 	@RequestMapping("/updatedocument")
-	public String updateDocument(@ModelAttribute("Document")Document docs,RedirectAttributes attr)
-	{
+	public String updateDocument(@ModelAttribute("Document")Document docs,RedirectAttributes attr) {
 		int res = docserv.updateDocument(docs);
-		if(res > 0)
-		{
+		if(res > 0) {
 			Document document = docserv.getDocById(docs.getDoc_id().toString());
-			
 			DocumentHistory dhist = new DocumentHistory();
-			
 			String tday = simpleDateFormat.format(today);
 			
 			dhist.setDocument(document);
@@ -141,11 +127,8 @@ public class DocumentController {
 			return "redirect:/viewdocuments";
 		}
 		else {
-			
 				Document document = docserv.getDocById(docs.getDoc_id().toString());
-				
 				DocumentHistory dhist = new DocumentHistory();
-				
 				String tday = simpleDateFormat.format(today);
 				
 				dhist.setDocument(document);
@@ -160,19 +143,16 @@ public class DocumentController {
 	}
 	
 	@RequestMapping("/uploaddocuments")
-	public String uploadDocuments()
-	{
+	public String uploadDocuments() {
 		return "UploadDocument";
 	}
 	
 	
 	@RequestMapping("/upload")@ResponseBody
-	public String uploadFiles(@RequestParam("files") MultipartFile[] files,RedirectAttributes attr)
-	{
+	public String uploadFiles(@RequestParam("files") MultipartFile[] files,RedirectAttributes attr) {
 		StringBuilder filenames= new StringBuilder();
 		
-		for(MultipartFile fileone : files)
-		{
+		for(MultipartFile fileone : files) {
 			Path filenamesandpath = Paths.get(uploadDirectory ,fileone.getOriginalFilename());
 			filenames.append(fileone.getOriginalFilename());
 			
@@ -199,8 +179,7 @@ public class DocumentController {
 	
 	@RequestMapping("/fileexists{id}")
 	@ResponseBody
-	public String  downloadDocuments(@RequestParam("id") String id,RedirectAttributes attr)
-	{
+	public String  downloadDocuments(@RequestParam("id") String id,RedirectAttributes attr) {
 		return "The id is ->>> "+id;
 	}
 	
@@ -208,7 +187,7 @@ public class DocumentController {
 	EmailService mailserv;
 
 	@Scheduled(cron ="2,20 18 14 5,18,L * *  ")
-	void someJob() throws InterruptedException, Exception
+	void someJob() throws InterruptedException, Exception 
 	{
 		LocalDate today = LocalDate.now();
 		LocalDate l_year;
@@ -241,8 +220,7 @@ public class DocumentController {
 	}
 	
 	@RequestMapping("/deldocbyid/{id}")@ResponseBody
-	public String deldocbyid(@PathVariable("id")String id)
-	{
+	public String deldocbyid(@PathVariable("id")String id) {
 		int res = docserv.deleteDocumentById(id);
 		if(res!=0) {
 			System.err.println("Document is deleted successfully");

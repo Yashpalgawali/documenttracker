@@ -57,7 +57,7 @@
 				
 				$(docarr).appendTo("#docbody");
 				$('#doctable').DataTable( {
-			        "order": [ 5, "asc" ],
+			        "order": [ 4, "desc" ],
 			        "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
 			        	
 			        	var rowCount = $("#doctable tr").length;
